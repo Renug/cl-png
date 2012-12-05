@@ -3,7 +3,12 @@
   (:use :common-lisp
 	:liang.rannger.crc)
   (:export :read-png
-	   :png-chunk))
+	   :png-chunk
+           :IHDR
+           :tEXt
+           :IDAT
+           :IEND
+           :ITXT))
 
 (in-package :liang.rannger.png)
 (load "png-chunk.lisp")

@@ -5,21 +5,40 @@
 			      :element-type '(unsigned-byte 8))
     (let ((png-file-flag (loop repeat 8 collect (read-byte png-stream nil 'eof))))
       (when (equal png-file-flag '(137 80 78 71 13 10 26 10))
-	(print "it's a png file")))))
+        (mapcar #'make-chunk-data-instance (read-png-data-chunk png-stream))))))
+
+(defun bytes-to-number (bytes)
+  (if (null bytes)
+    0
+    (logior (ash (first bytes) 
+                 (* 8 (1- (length bytes)))) 
+            (bytes-to-number (cdr bytes)))))
+
+(defun eof-p (var)
+  (eql var 'eof))
 
 (defun read-png-data-chunk (stream)
   (flet ((read-a-chunk (stream)
 	   (let* ((data-length (loop repeat 4 collect (read-byte stream nil 'eof)))
 		  (type-code (loop repeat 4 collect (read-byte stream nil 'eof)))
-		  (chunk (make-instance 'png-chunk)))
-	     (setf (data-length chunk) (logior (ash (first data-length) 24) 
-					       (ash (second data-length) 16)
-					       (ash (third data-length) 8)
-					       (fourth data-length)))
-	     (setf (chunk-data chunk) (loop repeat (data-length chunk) collect (read-byte stream)))
-	     (setf (crc-code chunk) (loop repeat 4 collect (read-byte stream))))))
+                  (chunk-data nil)
+                  (crc-code nil))
+             (if (member 'eof (append data-length type-code))
+               (return-from read-a-chunk 'eof)
+               (setf chunk-data (loop repeat (bytes-to-number data-length) collect (read-byte stream))))
+             (if (member 'eof chunk-data)
+               (return-from read-a-chunk 'eof)
+               (setf crc-code (loop repeat 4 collect (read-byte stream))))
+             (if (member 'eof crc-code)
+               (return-from read-a-chunk 'eof)
+               (make-instance 'png-chunk 
+                 :data-length (bytes-to-number data-length)
+                 :chunk-data chunk-data
+                 :chunk-type (coerce (mapcar #'code-char type-code) 'string)
+                 :crc-code (bytes-to-number crc-code))))))
     (loop for chunk = (read-a-chunk stream)
-	 while chunk 
+	 until (eof-p chunk)
 	 collect chunk)))
+	     
 	     
 	     
