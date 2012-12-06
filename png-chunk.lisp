@@ -38,7 +38,7 @@
   chunk)
 
 (defmethod print-field ((chunk png-data-chunk))
-  (format t "~a" chunk))
+  (format t "~a~%" chunk))
 
 (defclass IHDR (png-data-chunk)
   ((width :accessor width
@@ -78,13 +78,19 @@
 	  (compression-method chunk)
 	  (filter-method chunk)
 	  (interlace-method chunk)))
-	  
+
 	  
 (defclass TEXT (png-data-chunk)
   ()) 
 
 (defclass IDAT (png-data-chunk)
-  ())
+  ((uncompress-data :accessor uncompress-data
+		   :initarg :uncompress-data
+		   :initform 0)))
+
+(defmethod init-field ((chunk IDAT))
+    (setf (uncompress-data chunk) (uncompress (chunk-binary-data chunk)))
+    chunk)
 
 (defclass IEND (png-data-chunk)
   ()) 

@@ -13,3 +13,4 @@
 (in-package :liang.rannger.png)
 (load "png-chunk.lisp")
 (load "read.lisp")
+(load "uncompress.lisp")
