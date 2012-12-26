@@ -79,24 +79,63 @@
 	  (filter-method chunk)
 	  (interlace-method chunk)))
 
-	  
-(defclass TEXT (png-data-chunk)
-  ()) 
+(defclass PLTE (png-data-chunk)
+  ())
 
+	  
 (defclass IDAT (png-data-chunk)
   ((uncompress-data :accessor uncompress-data
 		   :initarg :uncompress-data
 		   :initform 0)))
 
 (defmethod init-field ((chunk IDAT))
-    (setf (uncompress-data chunk) (uncompress (chunk-binary-data chunk)))
     chunk)
 
 (defclass IEND (png-data-chunk)
   ()) 
 
-(defclass ITXT (png-data-chunk)
-  ())                     
-  
-(defclass ICCP (png-data-chunk)
+(defclass bKGD (png-data-chunk)
   ())
+
+(defclass cHRM (png-data-chunk)
+  ())
+
+(defclass gAMA (png-data-chunk)
+  ())      
+
+(defclass hIST (png-data-chunk)
+  ())   
+
+(defclass iCCP (png-data-chunk)
+  ())           
+  
+(defclass iTXt (png-data-chunk)
+  ())
+
+(defclass pHYs (png-data-chunk)
+  ())
+
+(defclass sBIT (png-data-chunk)
+  ())
+
+(defclass sPLT (png-data-chunk)
+  ())
+
+(defclass sRGB (png-data-chunk)
+  ())
+
+(defclass sTER (png-data-chunk)
+  ())
+
+(defclass tEXt (png-data-chunk)
+  ())
+
+(defclass tIME (png-data-chunk)
+  ())
+
+(defclass tRNS (png-data-chunk)
+  ())
+
+(defclass zTXt (png-data-chunk)
+  ())
+

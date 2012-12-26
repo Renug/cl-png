@@ -1,4 +1,3 @@
-(load "crc.lisp")
 (defpackage :liang.rannger.png
   (:use :common-lisp
 	:liang.rannger.crc)
@@ -8,9 +7,20 @@
            :tEXt
            :IDAT
            :IEND
-           :ITXT))
+           :ITXT
+           :bKGD
+           :cHRM
+           :gAMA
+           :hIST
+           :iCCP
+           :iTXt
+           :pHYs
+           :sPLT
+           :sRGB
+           :sTER
+           :tEXt
+           :tIME
+           :tRNS
+           :zTXt))
 
-(in-package :liang.rannger.png)
-(load "png-chunk.lisp")
-(load "read.lisp")
-(load "uncompress.lisp")
+

@@ -1,5 +1,12 @@
 (in-package :liang.rannger.png)
 
+(defun bytes-to-number (bytes)
+  (if (null bytes)
+    0
+    (logior (ash (first bytes) 
+                 (* 8 (1- (length bytes)))) 
+            (bytes-to-number (cdr bytes)))))
+
 (defun read-png (path)
   (with-open-file (png-stream path
 			      :element-type '(unsigned-byte 8))
@@ -7,12 +14,7 @@
       (when (equal png-file-flag '(137 80 78 71 13 10 26 10))
         (mapcar #'make-chunk-data-instance (read-png-data-chunk png-stream))))))
 
-(defun bytes-to-number (bytes)
-  (if (null bytes)
-    0
-    (logior (ash (first bytes) 
-                 (* 8 (1- (length bytes)))) 
-            (bytes-to-number (cdr bytes)))))
+
 
 (defun eof-p (var)
   (eql var 'eof))

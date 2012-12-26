@@ -1,3 +1,3 @@
-(load "package.lisp")
+(load "load.lisp")
 
-(liang.rannger.png:read-png "/home/rannger/104.png")
+;(liang.rannger.png:read-png "/home/rannger/104.png")
