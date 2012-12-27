@@ -3,24 +3,24 @@
 	:liang.rannger.crc)
   (:export :read-png
 	   :png-chunk
-           :IHDR
-           :tEXt
-           :IDAT
-           :IEND
-           :ITXT
-           :bKGD
-           :cHRM
-           :gAMA
-           :hIST
-           :iCCP
-           :iTXt
-           :pHYs
-           :sPLT
-           :sRGB
-           :sTER
-           :tEXt
-           :tIME
-           :tRNS
-           :zTXt))
+           :chunk-IHDR
+           :chunk-tEXt
+           :chunk-IDAT
+           :chunk-IEND
+           :chunk-ITXT
+           :chunk-bKGD
+           :chunk-cHRM
+           :chunk-gAMA
+           :chunk-hIST
+           :chunk-iCCP
+           :chunk-iTXt
+           :chunk-pHYs
+           :chunk-sPLT
+           :chunk-sRGB
+           :chunk-sTER
+           :chunk-tEXt
+           :chunk-tIME
+           :chunk-tRNS
+           :chunk-zTXt))
 
 

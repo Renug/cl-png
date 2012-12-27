@@ -23,7 +23,7 @@
 (defmethod make-chunk-data-instance ((chunk png-chunk))
   (print-field
    (init-field 
-    (make-instance (intern (string-upcase (chunk-type chunk)) :liang.rannger.png) 
+    (make-instance (intern (string-upcase (concatenate 'string "chunk-" (chunk-type chunk))) :liang.rannger.png)
 		  :chunk-binary-data (chunk-data chunk)))))
 
 (defmethod check-png-crc ((chunk png-chunk))
@@ -40,7 +40,7 @@
 (defmethod print-field ((chunk png-data-chunk))
   (format t "~a~%" chunk))
 
-(defclass IHDR (png-data-chunk)
+(defclass chunk-IHDR (png-data-chunk)
   ((width :accessor width
           :initarg :width
           :initform 0)
@@ -59,7 +59,7 @@
    (interlace-method :accessor interlace-method
                      :initarg :interlace-method)))
 
-(defmethod init-field ((chunk IHDR))
+(defmethod init-field ((chunk chunk-IHDR))
   (setf (width chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 0 4)))
   (setf (height chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 4 8)))
   (setf (bit-depth chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 8 9)))
@@ -69,7 +69,7 @@
   (setf (interlace-method chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 12 13)))
   (return-from init-field chunk))
 
-(defmethod print-field ((chunk IHDR))
+(defmethod print-field ((chunk chunk-IHDR))
   (format t "~%width:~a~%height:~a~%bit-depth:~a~%color-type:~a~%compression-method:~a~%filter-method:~a~%interlace-method:~a~%" 
 	  (width chunk)
 	  (height chunk)
@@ -79,63 +79,63 @@
 	  (filter-method chunk)
 	  (interlace-method chunk)))
 
-(defclass PLTE (png-data-chunk)
+(defclass chunk-PLTE (png-data-chunk)
   ())
 
 	  
-(defclass IDAT (png-data-chunk)
+(defclass chunk-IDAT (png-data-chunk)
   ((uncompress-data :accessor uncompress-data
 		   :initarg :uncompress-data
 		   :initform 0)))
 
-(defmethod init-field ((chunk IDAT))
+(defmethod init-field ((chunk chunk-IDAT))
     chunk)
 
-(defclass IEND (png-data-chunk)
+(defclass chunk-IEND (png-data-chunk)
   ()) 
 
-(defclass bKGD (png-data-chunk)
+(defclass chunk-bKGD (png-data-chunk)
   ())
 
-(defclass cHRM (png-data-chunk)
+(defclass chunk-cHRM (png-data-chunk)
   ())
 
-(defclass gAMA (png-data-chunk)
+(defclass chunk-gAMA (png-data-chunk)
   ())      
 
-(defclass hIST (png-data-chunk)
+(defclass chunk-hIST (png-data-chunk)
   ())   
 
-(defclass iCCP (png-data-chunk)
+(defclass chunk-iCCP (png-data-chunk)
   ())           
   
-(defclass iTXt (png-data-chunk)
+(defclass chunk-iTXt (png-data-chunk)
   ())
 
-(defclass pHYs (png-data-chunk)
+(defclass chunk-pHYs (png-data-chunk)
   ())
 
-(defclass sBIT (png-data-chunk)
+(defclass chunk-sBIT (png-data-chunk)
   ())
 
-(defclass sPLT (png-data-chunk)
+(defclass chunk-sPLT (png-data-chunk)
   ())
 
-(defclass sRGB (png-data-chunk)
+(defclass chunk-sRGB (png-data-chunk)
   ())
 
-(defclass sTER (png-data-chunk)
+(defclass chunk-sTER (png-data-chunk)
   ())
 
-(defclass tEXt (png-data-chunk)
+(defclass chunk-tEXt (png-data-chunk)
   ())
 
-(defclass tIME (png-data-chunk)
+(defclass chunk-tIME (png-data-chunk)
   ())
 
-(defclass tRNS (png-data-chunk)
+(defclass chunk-tRNS (png-data-chunk)
   ())
 
-(defclass zTXt (png-data-chunk)
+(defclass chunk-zTXt (png-data-chunk)
   ())
 
