@@ -27,7 +27,9 @@
                   (crc-code nil))
              (if (member 'eof (append data-length type-code))
                (return-from read-a-chunk 'eof)
-               (setf chunk-data (loop repeat (bytes-to-number data-length) collect (read-byte stream))))
+	       (progn
+		 (setf chunk-data (make-list (bytes-to-number data-length)))
+		 (read-sequence chunk-data stream)))
              (if (member 'eof chunk-data)
                (return-from read-a-chunk 'eof)
                (setf crc-code (loop repeat 4 collect (read-byte stream))))
