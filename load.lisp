@@ -1,6 +1,6 @@
 (load "deflate.lisp")
 (load "crc.lisp")
-(load "streams.lisp")
 (load "package.lisp")
+(load "streams.lisp")
 (load "read.lisp")
 (load "png-chunk.lisp")
