@@ -1,6 +1,7 @@
 (defpackage :liang.rannger.png
   (:use :common-lisp
 	:DEFLATE
+	:sb-gray
 	:liang.rannger.crc)
   (:export :read-png
 	   :png-chunk

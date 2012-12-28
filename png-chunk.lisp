@@ -90,14 +90,13 @@
 
 
 (defmethod init-field ((chunk chunk-IDAT))
-  (let ((data-list-string (coerce (mapcar #'code-char (chunk-binary-data chunk)) 'string))
-	(output-data-string (make-array '(0) :element-type 'base-char
-                             :fill-pointer 0 :adjustable t)))
-    (with-input-from-string (input-stream data-list-string)
-      (with-output-to-string (output-stream output-data-string)
-	(setf (uncompress-data chunk) (inflate-stream input-stream output-stream)))))
-      chunk)
-
+  (with-slots (uncompress-data chunk-binary-data) chunk
+    (let ((input-stream (make-instance 'png-data-input-stream :data-list chunk-binary-data))
+	  (output-stream (make-instance 'png-data-output-stream)))
+      (inflate-zlib-stream input-stream output-stream)
+      (setf uncompress-data (data-list output-stream))))
+  (return-from init-field chunk))
+  
 (defclass chunk-IEND (png-data-chunk)
   ()) 
 
