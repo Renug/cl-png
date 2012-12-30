@@ -9,8 +9,8 @@
   :author "rannger"
   :depends-on ()
   :components ((:file "crc")
-	       (:file "deflate")
-	       (:file "package" :depends-on ("deflate" "crc"))
+	       (:file "package" :depends-on ("crc"))
+	       (:file "deflate" :depends-on ("package"))
 	       (:file "read" :depends-on ("package"))
 	       (:file "png-chunk" :depends-on ("package"))
 	       (:file "streams" :depends-on ("package"))))

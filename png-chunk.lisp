@@ -60,24 +60,28 @@
                      :initarg :interlace-method)))
 
 (defmethod init-field ((chunk chunk-IHDR))
-  (setf (width chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 0 4)))
-  (setf (height chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 4 8)))
-  (setf (bit-depth chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 8 9)))
-  (setf (color-type chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 9 10)))
-  (setf (compression-method chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 10 11)))
-  (setf (filter-method chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 11 12)))
-  (setf (interlace-method chunk) (bytes-to-number (subseq (chunk-binary-data chunk) 12 13)))
+  (with-slots (width height bit-depth color-type compression-method filter-method interlace-method chunk-binary-data) chunk
+    (setf width (bytes-to-number (subseq chunk-binary-data 0 4)))
+    (setf height (bytes-to-number (subseq chunk-binary-data 4 8)))
+    (setf bit-depth (bytes-to-number (subseq chunk-binary-data 8 9)))
+    (setf color-type (bytes-to-number (subseq chunk-binary-data 9 10)))
+    (setf compression-method (bytes-to-number (subseq chunk-binary-data 10 11)))
+    (setf filter-method (bytes-to-number (subseq chunk-binary-data 11 12)))
+    (setf interlace-method (bytes-to-number (subseq chunk-binary-data 12 13))))
   (return-from init-field chunk))
 
+
 (defmethod print-field ((chunk chunk-IHDR))
-  (format t "~%width:~a~%height:~a~%bit-depth:~a~%color-type:~a~%compression-method:~a~%filter-method:~a~%interlace-method:~a~%" 
-	  (width chunk)
-	  (height chunk)
-	  (bit-depth chunk)
-	  (color-type chunk)
-	  (compression-method chunk)
-	  (filter-method chunk)
-	  (interlace-method chunk)))
+  (with-slots (width height bit-depth color-type compression-method filter-method interlace-method) chunk
+    (format t "~%width:~a~%height:~a~%bit-depth:~a~%color-type:~a~%compression-method:~a~%filter-method:~a~%interlace-method:~a~%" 
+            width
+            height
+            bit-depth
+            color-type
+            compression-method
+            filter-method
+            interlace-method)))
+
 
 (defclass chunk-PLTE (png-data-chunk)
   ())

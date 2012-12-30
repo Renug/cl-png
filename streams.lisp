@@ -16,11 +16,11 @@
 (defmethod stream-read-byte ((streams png-data-input-stream))
   (with-slots (data-list read-position) streams
     (if (>= read-position (length data-list))
-	(error "no more data")
+	(error 'end-of-file :stream streams)
 	(progn 
 	  (incf read-position)
 	  (nth (1- read-position) data-list)))))
 
 (defmethod stream-write-byte ((streams png-data-output-stream) byte-value)
   (with-slots (data-list) streams
-    (nconc data-list (list byte-value))))
+    (setf data-list (append data-list (list byte-value)))))

@@ -1,6 +1,6 @@
 ;;;; Deflate --- RFC 1951 Deflate Decompression
 ;;;;
-;;;; Copyright (C) 2000-2010 PMSF IT Consulting Pierre R. Mai.
+;;;; Copyright (C) 2000-2009 PMSF IT Consulting Pierre R. Mai.
 ;;;;
 ;;;; Permission is hereby granted, free of charge, to any person obtaining
 ;;;; a copy of this software and associated documentation files (the
@@ -26,17 +26,10 @@
 ;;;; other dealings in this Software without prior written authorization
 ;;;; from the author.
 ;;;; 
-;;;; $Id: 7d4d69c70797de0c152a48385eadc00cdaf47542 $
+;;;; $Id: 377d3a33e9db5a3b54c850619183ee555a41b894 $
 
-(cl:defpackage "DEFLATE"
-  (:use "COMMON-LISP")
-  (:export #:decompression-error #:deflate-decompression-error
-           #:zlib-decompression-error #:gzip-decompression-error
-           #:inflate-stream
-           #:inflate-zlib-stream #:parse-zlib-header #:parse-zlib-footer
-           #:inflate-gzip-stream #:parse-gzip-header #:parse-gzip-footer))
-
-(cl:in-package "DEFLATE")
+;(cl:in-package #:ql-gunzipper)
+(in-package :liang.rannger.png)
 
 ;;;; %File Description:
 ;;;; 
@@ -287,7 +280,12 @@
 
 (declaim (inline bit-stream-read-bits))
 (defun bit-stream-read-bits (stream bits)
-  (declare (type bit-stream stream) #-ecl (type (unsigned-byte 8) bits))
+  (declare (type bit-stream stream)
+           ;; [quicklisp-added]
+           ;; FIXME: This might be fixed soon in ECL.
+           ;; http://article.gmane.org/gmane.lisp.ecl.general/7659
+           #-ecl
+           (type (unsigned-byte 8) bits))
   "Read single or multiple bits from the given bit-stream."
   (loop while (< (bit-stream-bit-count stream) bits)
         do
@@ -775,3 +773,14 @@ match."
                "Checksum mismatch for decompressed stream: ~8,'0X != ~8,'0X!"
                :format-arguments (list checksum-old checksum-new)))
       (values checksum-old fname mtime fcomment))))
+
+
+(defun gunzip (input-file output-file)
+  (with-open-file (input input-file
+                         :element-type '(unsigned-byte 8))
+    (with-open-file (output output-file
+                            :direction :output
+                            :if-exists :supersede
+                            :element-type '(unsigned-byte 8))
+      (inflate-gzip-stream input output)))
+  (probe-file output-file))

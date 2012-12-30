@@ -2,8 +2,8 @@
 
 (defpackage :liang.rannger.png
   (:use :common-lisp
-	:DEFLATE
-	:sb-gray
+	#+sbcl :sb-gray
+	#+ccl :gray
 	:liang.rannger.crc)
   (:export :read-png
 	   :png-chunk
