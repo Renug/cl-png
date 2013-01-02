@@ -8,8 +8,7 @@
   :version "0.1"
   :author "rannger"
   :depends-on ()
-  :components ((:file "crc")
-	       (:file "package" :depends-on ("crc"))
+  :components ((:file "package")
 	       (:file "deflate" :depends-on ("package"))
 	       (:file "read" :depends-on ("package"))
 	       (:file "png-chunk" :depends-on ("package"))

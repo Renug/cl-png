@@ -27,8 +27,9 @@
 		  :chunk-binary-data (chunk-data chunk)))))
 
 (defmethod check-png-crc ((chunk png-chunk))
-  (= (liang.rannger.crc:crc (chunk-data chunk) #x104C11DB7)
-     (crc-code chunk)))
+;  (= (liang.rannger.crc:crc (chunk-data chunk) #x104C11DB7)
+;     (crc-code chunk)))
+  t)
 
 (defclass png-data-chunk ()
   ((chunk-binary-data :initarg :chunk-binary-data

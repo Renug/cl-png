@@ -3,8 +3,7 @@
 (defpackage :liang.rannger.png
   (:use :common-lisp
 	#+sbcl :sb-gray
-	#+ccl :gray
-	:liang.rannger.crc)
+	#+ccl :gray)
   (:export :read-png
 	   :png-chunk
            :chunk-IHDR
