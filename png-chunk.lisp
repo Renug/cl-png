@@ -119,6 +119,9 @@
 (defclass chunk-IEND (png-data-chunk)
   ()) 
 
+(defmethod print-field ((chunk chunk-IEND))
+  (format t "it's end.~%"))
+
 (defclass chunk-bKGD (png-data-chunk)
   ())
 
@@ -126,7 +129,18 @@
   ())
 
 (defclass chunk-gAMA (png-data-chunk)
-  ())      
+  ((image-gamma :accessor image-gamma
+		:initarg :image-gamma
+		:initform nil)))
+
+(defmethod init-field ((chunk chunk-gAMA))
+  (with-slots (image-gamma chunk-binary-data) chunk
+    (setf image-gamma (bytes-to-number chunk-binary-data)))
+  chunk)
+
+(defmethod print-field ((chunk chunk-gAMA))
+  (with-slots (image-gamma) chunk
+    (format t "Image gamma:~a~%" image-gamma)))
 
 (defclass chunk-hIST (png-data-chunk)
   ())   
@@ -153,7 +167,29 @@
   ())
 
 (defclass chunk-tEXt (png-data-chunk)
-  ())
+  ((text-keyword :accessor text-keyword
+	    :initform ""
+	    :initarg :keyword)
+   (text-content :accessor text-content
+	    :initform ""
+	    :initarg :content)))
+
+(defmethod print-field ((chunk chunk-tEXt))
+  (with-slots (text-keyword text-content) chunk
+    (format t "keyword:~a~%content:~a~%" text-keyword text-content)))
+
+(defmethod init-field ((chunk chunk-tEXt))
+  (flet ((split-by-one-space (string)
+	   (loop for i = 0 then (1+ j)
+	      as j = (position #\Space string :start i)
+	      collect (subseq string i j)
+	      while j)))
+    (with-slots (text-keyword text-content chunk-binary-data) chunk
+	       (let ((str-list (split-by-one-space (concatenate 'string (mapcar #'code-char chunk-binary-data)))))
+		 (setf text-keyword (first str-list))
+		 (setf text-content (second str-list)))))
+  chunk)
+	       
 
 (defclass chunk-tIME (png-data-chunk)
   ())
