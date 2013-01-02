@@ -84,7 +84,22 @@
 
 
 (defclass chunk-PLTE (png-data-chunk)
-  ())
+  ((color-list :accessor color-list
+	       :initarg :color-list
+	       :initform nil)))
+
+(defmethod init-field ((chunk chunk-PLTE))
+  (labels ((make-color-list (lst)
+	     (when (not (null lst))
+		 (append (list (subseq lst 0 3)) (make-color-list (cdddr lst))))))
+    (with-slots (chunk-binary-data color-list) chunk
+      (let ((list-data (copy-list chunk)))
+	(unwind-protect
+	     (unless (= 0 (mod (length list-data) 3))
+	       (error "it's not legitimate")
+	       (return-from init-field chunk))
+	  (setf color-list (make-color-list list-data))))))
+  chunk)
 
 	  
 (defclass chunk-IDAT (png-data-chunk)
