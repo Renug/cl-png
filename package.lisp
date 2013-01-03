@@ -1,9 +1,7 @@
 (in-package :png-system)
 
 (defpackage :liang.rannger.png
-  (:use :common-lisp
-	#+sbcl :sb-gray
-	#+ccl :gray)
+  (:use :common-lisp)
   (:export :read-png
 	   :png-chunk
            :chunk-IHDR
